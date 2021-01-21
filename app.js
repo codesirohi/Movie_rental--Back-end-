@@ -1,10 +1,13 @@
 const joi = require('joi');
 const logger = require('./logger');
 const express = require('express');
-const app = express();
+var helmet = require('helmet');
 
+const app = express();
+app.use(express.helmet())
 app.use(express.json()); //middle ware
-app.use(express.urlencode());   //key=value&key=value
+app.use(express.urlencoded( {extended: true}));   //key=value&key=value
+app.use(express.static('public')); //builtin middleware
 
 app.use(logger);
 
