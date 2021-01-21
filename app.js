@@ -1,15 +1,26 @@
-const joi = require('joi');
+//const joi = require('joi');
 const logger = require('./logger');
 const express = require('express');
-var helmet = require('helmet');
+const helmet = require('helmet');
+const morgan = require('morgan');
 
 const app = express();
-app.use(express.helmet())
+
+const env = process.env.NODE_ENV;
+console.log(`NODE ENVIROMENT: ${env}`) //undefined
+console.log(`APP ENV:  ${app.get(`env`)}`) //development on develope
+
+if(app.get('env')=== 'development'){
+    app.use(morgan('tiny'));
+}
+
 app.use(express.json()); //middle ware
 app.use(express.urlencoded( {extended: true}));   //key=value&key=value
 app.use(express.static('public')); //builtin middleware
+//app.use(helmet());
 
-app.use(logger);
+
+//app.use(logger);
 
 
 //next is reference to next middle ware function in the pipe line
