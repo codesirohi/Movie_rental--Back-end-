@@ -1,10 +1,17 @@
+const joi = require('joi');
+const logger = require('./logger');
 const express = require('express');
 const app = express();
 
 app.use(express.json()); //middle ware
+app.use(express.urlencode());   //key=value&key=value
 
+app.use(logger);
+
+
+//next is reference to next middle ware function in the pipe line
 const courses = [
-    {id: 1, name: 'course1'},
+    {id: 1, name: 'course1'},  
     {id: 2, name: 'course2'},
     {id: 3, name: 'course3'},    
     
@@ -15,17 +22,19 @@ const courses = [
 //1) url and 2) call back function
 // a function that will be called when we get ht0tp get request
 //this call back function have two arguments request and response
-app.get('/',(req,res) => {
+app.get('/',( req,res) => {
 
      res.send('wassusp boiss')
 
 
 });
 
-app.get('/api/courses',(req,res)=> {
-
+app.get('/api/courses',( req,res)=> {
+ 
     res.send(courses);
-})
+});
+
+
 //in  this we paase dtwo arguments 
 // port no. and functin that will pass whne
 //the application start listening on the given port  
@@ -48,7 +57,7 @@ app.get('/api/courses/:id', (req, res)=> {
 
 app.post('/api/courses',(req,res) =>{
 
-    const course = {
+    const course = {  
         id: courses.length + 1,
         name: req.body.name
     };
@@ -63,7 +72,7 @@ app.post('/api/courses',(req,res) =>{
 
 const port = process.env.PORT || 3000;
 //if dynamically no port is available use 3000
-app.listen(3000, () => console.log(`listening on port ${port}` ));
+app.listen(port, () => console.log(`listening on port ${port}` ));
 
 //setting the value for env variable 
 //export PORT= 5000
